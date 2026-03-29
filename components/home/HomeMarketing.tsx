@@ -47,11 +47,11 @@ export function HomeMarketing() {
 
   return (
     <div className="bg-white text-gray-800">
-      <header className="relative flex h-[600px] w-full items-center justify-center overflow-hidden hero-bg">
+      <header className="relative flex min-h-[420px] w-full items-center justify-center overflow-hidden pb-8 pt-16 hero-bg md:min-h-[500px] md:pb-0">
         <div className="absolute inset-0 bg-blue-900/30" />
 
         <div className="relative z-10 w-full max-w-5xl px-4 text-center">
-          <h1 className="fade-in-up mb-8 text-4xl font-bold text-white drop-shadow-lg">
+          <h1 className="fade-in-up mb-6 text-3xl font-bold text-white drop-shadow-lg md:mb-8 md:text-4xl">
             Track Your Shipment
           </h1>
 
@@ -65,19 +65,20 @@ export function HomeMarketing() {
               value={trackInput}
               onChange={(e) => setTrackInput(e.target.value)}
               placeholder="Enter your tracking number(s)"
-              className="w-full bg-transparent p-4 text-lg text-gray-700 outline-none placeholder:text-gray-400"
+              className="w-full bg-transparent px-4 py-3 text-base text-gray-700 outline-none placeholder:text-gray-400 md:p-4 md:text-lg"
             />
             <button
               type="submit"
-              className="w-full whitespace-nowrap rounded-xl bg-blue-600 px-8 py-4 font-bold text-white shadow-lg transition-colors hover:bg-blue-700 md:w-auto"
+              className="w-full whitespace-nowrap rounded-xl bg-blue-600 px-8 py-3 font-bold text-white shadow-lg transition-colors hover:bg-blue-700 md:w-auto md:py-4"
             >
               Track
             </button>
           </form>
         </div>
+      </header>
 
-        <div className="absolute bottom-[-6rem] left-0 right-0 z-20 w-full px-4 md:bottom-[-4rem]">
-          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 md:grid-cols-3">
+      <div className="relative z-20 mx-auto -mt-10 max-w-7xl px-4 md:-mt-16">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <Link
               href="/track"
               className="fade-in-up hover-card cursor-pointer rounded-2xl border border-gray-100 bg-white p-6 shadow-xl"
@@ -126,11 +127,10 @@ export function HomeMarketing() {
                 </p>
               </div>
             </a>
-          </div>
         </div>
-      </header>
+      </div>
 
-      <div className="h-32 bg-white md:h-24" />
+      <div className="h-8 bg-white md:h-12" />
 
       <section id="quote" className="fade-in-up bg-blue-100 px-4 py-12 md:px-8">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 md:flex-row">
