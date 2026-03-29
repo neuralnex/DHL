@@ -55,6 +55,7 @@ Without the worker running, jobs are still created but **emails are not sent**.
 | `REDIS_URL` | Redis URL (e.g. `redis://127.0.0.1:6379`) |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM` | Outbound email for the worker |
 | `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` | Mapbox token for **public tracking map** and **staff create-shipment** geocoding (optional but recommended) |
+| `PUBLIC_APP_URL` or `NEXT_PUBLIC_APP_URL` | **Required.** Public site origin for **track links in emails** (no trailing slash). Set on **both** the Next.js host and the **worker** so notifications link correctly. |
 | `TYPEORM_SYNC` | Set `true` in dev to auto-sync schema; use migrations in production |
 | `ADMIN_EMAIL`, `ADMIN_PASSWORD` | Staff login for `/beth` and protected APIs |
 | `ADMIN_SESSION_SECRET` | JWT signing secret (min 32 characters) |

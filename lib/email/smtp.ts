@@ -65,6 +65,8 @@ export async function sendShipmentNotificationEmail(params: {
   trackingNumber: string;
   subjectLine: string;
   bodyText: string;
+  /** Pre-built HTML; if omitted, a simple paragraph layout is generated from bodyText */
+  bodyHtml?: string;
 }): Promise<void> {
   const cfg = await resolveSmtpConfig();
   if (!cfg) {
@@ -72,17 +74,20 @@ export async function sendShipmentNotificationEmail(params: {
   }
   const { header: toHeader } = normalizeRecipients(params.to);
   const transport = await getSmtpTransport();
+  const html =
+    params.bodyHtml ??
+    `<div style="font-family:system-ui,sans-serif;max-width:560px;line-height:1.5">
+${params.bodyText
+  .split("\n")
+  .map((l) => (l ? `<p style="margin:0 0 .75em">${escapeHtml(l)}</p>` : "<br/>"))
+  .join("\n")}
+</div>`;
   await transport.sendMail({
     from: cfg.from,
     to: toHeader,
     subject: params.subjectLine,
     text: params.bodyText,
-    html: `<div style="font-family:system-ui,sans-serif;max-width:560px;line-height:1.5">
-${params.bodyText
-  .split("\n")
-  .map((l) => (l ? `<p style="margin:0 0 .75em">${escapeHtml(l)}</p>` : "<br/>"))
-  .join("\n")}
-</div>`,
+    html,
   });
 }
 

@@ -7,6 +7,7 @@ import {
   Shipment,
   TrackingEvent,
 } from "./lib/db/entities";
+import { buildShipmentNotificationContent } from "./lib/email/shipment-notification-template";
 import { sendShipmentNotificationEmail } from "./lib/email/smtp";
 import type { NotificationJobData } from "./lib/queue/notification-queue";
 import { getRedisConnection } from "./lib/queue/redis";
@@ -34,15 +35,13 @@ async function processJob(data: NotificationJobData): Promise<void> {
   });
   if (!shipment) return;
 
-  const subjectLine = `[${shipment.trackingNumber}] ${ev.label}`;
-  const bodyText = [
-    `Shipment ${shipment.trackingNumber}`,
-    ``,
-    `Update: ${ev.label}`,
-    `Route: ${shipment.originLabel} → ${shipment.destinationLabel}`,
-    ``,
-    `Time (UTC): ${ev.occurredAt.toISOString()}`,
-  ].join("\n");
+  const { subject, text, html } = buildShipmentNotificationContent({
+    trackingNumber: shipment.trackingNumber,
+    eventStatusLabel: ev.label,
+    originLabel: shipment.originLabel,
+    destinationLabel: shipment.destinationLabel,
+    occurredAt: ev.occurredAt,
+  });
 
   const recipients: string[] = [shipment.receiverEmail];
   if (shipment.senderEmail?.trim()) {
@@ -53,8 +52,9 @@ async function processJob(data: NotificationJobData): Promise<void> {
     await sendShipmentNotificationEmail({
       to: recipients,
       trackingNumber: shipment.trackingNumber,
-      subjectLine,
-      bodyText,
+      subjectLine: subject,
+      bodyText: text,
+      bodyHtml: html,
     });
     await ds.getRepository(NotificationLog).save(
       ds.getRepository(NotificationLog).create({
